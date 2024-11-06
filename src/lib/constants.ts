@@ -1,6 +1,5 @@
 import { Actor } from "../types/Actor";
 
-export const MOVIE_API_KEY = process.env.REACT_APP_API_KEY;
 export const MOVIE_ACCESS_TOKEN = process.env.REACT_APP_API_ACCESS_TOKEN;
 export const MOVIE_URL = "https://api.themoviedb.org/3";
 
