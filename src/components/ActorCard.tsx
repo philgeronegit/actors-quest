@@ -15,7 +15,7 @@ const ActorCard = ({ actor, selectedActor, onClick }: ActorCardProps) => {
     <Tilt
       tiltMaxAngleX={15}
       tiltMaxAngleY={15}
-      scale={1.1}
+      scale={1.05}
       transitionSpeed={450}
       className="p-1">
       <Card
@@ -29,7 +29,7 @@ const ActorCard = ({ actor, selectedActor, onClick }: ActorCardProps) => {
           className="object-scale-down w-full h-24 drop-shadow-md"
           src={
             actor.profile_path
-              ? `https://image.tmdb.org/t/p/w500${actor.profile_path}`
+              ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
               : DefaultImage
           }
           alt={actor.name}
