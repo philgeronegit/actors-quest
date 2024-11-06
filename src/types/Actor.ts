@@ -28,7 +28,6 @@ export type Actor = {
   known_for: Movie[];
 };
 
-// https://api.themoviedb.org/3/person/287?api_key={{API_KEY}}
 export type ActorDetail = {
   id: number;
   name: string;
@@ -44,7 +43,6 @@ export type ActorDetail = {
   favorite?: boolean;
 };
 
-// https://api.themoviedb.org/3/movie/278/credits?api_key={{API_KEY}}
 export type MovieActor = {
   id: number;
   gender: number;
