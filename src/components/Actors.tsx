@@ -69,7 +69,7 @@ const Actors = ({
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentActors = actors.slice(startIndex, startIndex + ITEMS_PER_PAGE);
   const totalPages = Math.ceil(actors.length / ITEMS_PER_PAGE);
-  const showPagination = totalPages > ITEMS_PER_PAGE;
+  const showPagination = actors.length > ITEMS_PER_PAGE;
 
   const onPageChange = (page: number) => setCurrentPage(page);
 
@@ -78,7 +78,7 @@ const Actors = ({
   }
 
   return (
-    <div>
+    <div className="flex flex-col justify-between h-full">
       <div className="grid grid-cols-3 overflow-hidden">
         {currentActors.map((actor: Actor) => (
           <ActorCard

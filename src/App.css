@@ -1,8 +1,14 @@
 .grid-container {
   display: grid;
   gap: 8px;
+  grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "recherche affichage favoris"
+    "resultat affichage favoris"
+    "resultat affichage favoris"
+    "resultat affichage favoris"
+    "resultat affichage favoris"
+    "resultat affichage favoris"
     "resultat affichage favoris"
     "historique films favoris"
     "erreur erreur erreur";

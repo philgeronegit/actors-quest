@@ -1,3 +1,4 @@
+import { Card } from "flowbite-react";
 import { useState } from "react";
 import { Movie } from "../types/Actor";
 import MovieCard from "./MovieCard";
@@ -9,15 +10,13 @@ type MoviesProps = {
 const Movies = ({ movies = [], movieOnClick }: MoviesProps) => {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  console.log("Movies:", movies);
-
   const handleMovieOnClick = (movie: Movie) => {
     setSelectedMovie(movie);
     movieOnClick(movie);
   };
 
   return (
-    <div>
+    <Card href="#" className="cursor-default min-h-32">
       <h3 className="text-lg font-bold">Films</h3>
       {movies.map((movie: Movie) => (
         <MovieCard
@@ -27,7 +26,7 @@ const Movies = ({ movies = [], movieOnClick }: MoviesProps) => {
           movie={movie}
         />
       ))}
-    </div>
+    </Card>
   );
 };
 

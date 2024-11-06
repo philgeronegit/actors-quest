@@ -53,7 +53,7 @@ function App() {
 
   return (
     <main className="m-3 grid-container">
-      <div className="search">
+      <div className="search max-h-0">
         <SearchButton onChange={handleNewSearch} />
       </div>
       <div className="results">
