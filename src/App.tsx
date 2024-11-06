@@ -3,6 +3,7 @@ import "./App.css";
 import ActorDetailCard from "./components/ActorDetail";
 import Actors from "./components/Actors";
 import Erreur from "./components/Erreur";
+import FavoriteActors from "./components/FavoriteActors";
 import History from "./components/History";
 import Movies from "./components/Movies";
 import SearchButton from "./components/SearchButton";
@@ -76,7 +77,7 @@ function App() {
         />
       </div>
       <div className="favorite">
-        {/* <FavoriteActors /> */}
+        <FavoriteActors actors={[]} />
         {isLoading && <p>Recherche acteurs...</p>}
         {error && <p>Erreur: {error.message}</p>}
         {actors && (

@@ -1,4 +1,4 @@
-import { Pagination } from "flowbite-react";
+import { Pagination, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { MOVIE_URL } from "../lib/constants";
 import { fetchApi } from "../lib/utils";
@@ -74,7 +74,12 @@ const Actors = ({
   const onPageChange = (page: number) => setCurrentPage(page);
 
   if (loading) {
-    return <div>Chargement...</div>;
+    return (
+      <div>
+        Chargement...
+        <Spinner aria-label="Chargement" />
+      </div>
+    );
   }
 
   return (

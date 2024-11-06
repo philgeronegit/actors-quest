@@ -3,8 +3,9 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { IoMdFemale, IoMdMale } from "react-icons/io";
 import { PiGenderNonbinary } from "react-icons/pi";
 import DefaultImage from "../assets/default_image.png";
+import useFavoriteActor from "../hooks/useFavoriteActors";
 import { getKnownForDepartmentText } from "../lib/utils";
-import { ActorDetail } from "../types/Actor";
+import { Actor, ActorDetail } from "../types/Actor";
 
 export const getGenderIcon = (gender: number = 0) => {
   switch (gender) {
@@ -25,8 +26,24 @@ type ActorDetailProps = {
 };
 
 const ActorDetailCard = ({ actor, loading = false }: ActorDetailProps) => {
+  const { favorites, add, remove } = useFavoriteActor();
+  const isFavorite = favorites.find((a) => a.id === actor?.id);
+
   const handleFavoriteIconClick = () => {
-    console.log("Favorite icon clicked");
+    if (!actor) {
+      return;
+    }
+
+    const favoriteActor: Actor = {
+      ...actor,
+      original_name: actor?.name,
+      known_for: []
+    };
+    if (isFavorite) {
+      remove(favoriteActor);
+    } else {
+      add(favoriteActor);
+    }
   };
 
   if (loading) {
@@ -75,9 +92,10 @@ const ActorDetailCard = ({ actor, loading = false }: ActorDetailProps) => {
           }
           alt={actor?.name}
         />
-        {actor?.favorite ? (
+        {isFavorite ? (
           <FaHeart
             className="cursor-pointer"
+            color="red"
             onClick={handleFavoriteIconClick}
             size={48}
           />
