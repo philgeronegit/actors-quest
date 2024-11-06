@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Actors quest
+
+This project uses The Movie Database (TMDB) API to fetch actors and movies so you need to register for an API key (see https://developer.themoviedb.org/docs/getting-started).
+
+Rename the .env-sample file to .env and paste your TMDB Access Token Auth in the REACT_APP_API_ACCESS_TOKEN key.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
