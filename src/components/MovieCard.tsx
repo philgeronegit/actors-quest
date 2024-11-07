@@ -1,10 +1,11 @@
+import { Tooltip } from "flowbite-react";
 import { cn } from "../lib/utils";
-import { Movie } from "../types/Actor";
+import { MovieDetail } from "../types/Movie";
 
 type MovieProps = {
-  movie: Movie;
-  selectedMovie: Movie | null;
-  onClick: (movie: Movie) => void;
+  movie: MovieDetail;
+  selectedMovie: MovieDetail | null;
+  onClick: (movie: MovieDetail) => void;
 };
 
 const MovieCard = ({ movie, selectedMovie, onClick }: MovieProps) => {
@@ -14,7 +15,9 @@ const MovieCard = ({ movie, selectedMovie, onClick }: MovieProps) => {
         "border-2 border-slate-500": movie.id === selectedMovie?.id
       })}
       onClick={() => onClick(movie)}>
-      <div>{movie.title}</div>
+      <Tooltip content={movie.overview}>
+        <div>{`${movie.title} (${movie.release_date})`}</div>
+      </Tooltip>
     </div>
   );
 };
