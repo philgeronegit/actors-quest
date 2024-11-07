@@ -28,7 +28,7 @@ function useMovieActors(movieId: number | null) {
     enabled: !!movieId // Only fetch when movieId is truthy
   });
 
-  return { isLoading, error, actors };
+  return [isLoading, error, actors] as const;
 }
 
 export default useMovieActors;

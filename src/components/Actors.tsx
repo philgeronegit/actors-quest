@@ -50,24 +50,30 @@ function useActors(actorName: string) {
     fetchIt();
   }, [actorName]);
 
-  return { actors, loading };
+  return [actors, loading] as const;
 }
 
 type ActorsProps = {
+  actorsList?: Actor[];
   searchedActorName: string;
   selectedActor: Actor | null;
   onClick: (actor: Actor) => void;
 };
 
 const Actors = ({
+  actorsList,
   searchedActorName = "",
   selectedActor,
   onClick
 }: ActorsProps) => {
-  const { actors, loading } = useActors(searchedActorName);
+  const [actors, loading] = useActors(searchedActorName);
   const [currentPage, setCurrentPage] = useState(1);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentActors = actors.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const actorsToShow = actorsList || actors;
+  const currentActors = actorsToShow.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
   const totalPages = Math.ceil(actors.length / ITEMS_PER_PAGE);
   const showPagination = actors.length > ITEMS_PER_PAGE;
 

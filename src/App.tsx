@@ -16,13 +16,13 @@ import { MovieDetail } from "./types/Movie";
 
 function App() {
   const [movieId, setMovieId] = useState<number | null>(null);
-  const { history, add } = useHistory();
+  const [history, add] = useHistory();
   const [selectedActor, setSelectedActor] = useState<Actor | null>(null);
   const [actorDetail, setActorDetail] = useState<ActorDetail | null>(null);
   const [actorMovies, setActorMovies] = useState<MovieDetail[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const { isLoading, error, actors } = useMovieActors(movieId);
+  const [isLoading, error, actors] = useMovieActors(movieId);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
   const handleMovieOnClick = (movie: MovieDetail) => {

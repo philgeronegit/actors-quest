@@ -19,7 +19,7 @@ function useHistory() {
     });
   };
 
-  return { history, add };
+  return [history, add] as const;
 }
 
 export default useHistory;
