@@ -1,12 +1,8 @@
 import { FaTrash } from "react-icons/fa";
 import useFavoriteActor from "../hooks/useFavoriteActors";
 
-type FavoriteActorsProps = {
-  actors: { id: number; name: string }[];
-};
-
-const FavoriteActors = ({ actors }: FavoriteActorsProps) => {
-  const { favorites, add, remove } = useFavoriteActor();
+const FavoriteActors = () => {
+  const { favorites, remove } = useFavoriteActor();
   return (
     <div>
       <h3 className="text-xl font-bold">Acteurs favoris</h3>
