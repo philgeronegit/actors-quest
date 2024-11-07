@@ -14,32 +14,40 @@ type responseType = {
   total_results: number;
 };
 
-const fetchActors = async (actorName: string = ""): Promise<Actor[]> => {
-  const url = `${MOVIE_URL}/search/person?query=/${encodeURIComponent(
-    actorName
-  )}`;
-  const data: responseType = await fetchApi(url);
-  console.log("FETCH Actors:", data);
-  return actorName ? data.results : Promise.resolve([]);
+const fetchActors = async (
+  actorName: string = "",
+  pages: number = 1
+): Promise<Actor[]> => {
+  let allResults: Actor[] = [];
+  for (let page = 1; page <= pages; page++) {
+    const url = `${MOVIE_URL}/search/person?page=${page}&query=${encodeURIComponent(
+      actorName
+    )}`;
+    const data: responseType = await fetchApi(url);
+    console.log("🚀 ~ data:", data);
+
+    if (page > data.total_pages) {
+      break;
+    }
+    console.log(
+      `fetching page ${page} total_pages = ${data.total_pages} : url = ${url}`
+    );
+    allResults = allResults.concat(
+      data.results.filter((actor) => actor.known_for_department === "Acting")
+    );
+  }
+  return actorName ? allResults : Promise.resolve([]);
 };
 
 function useActors(actorName: string) {
   const [actors, setActors] = useState<Actor[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setActors(ACTORS);
-  //     setLoading(false);
-  //   }, 500);
-  // }, []);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchIt = async () => {
       setLoading(true);
       try {
-        const actors = await fetchActors(actorName);
-        console.log(actors);
+        const actors = await fetchActors(actorName, 3);
         setActors(actors);
       } catch (error) {
         console.error(error);
@@ -47,7 +55,9 @@ function useActors(actorName: string) {
         setLoading(false);
       }
     };
-    fetchIt();
+    if (actorName.length > 0) {
+      fetchIt();
+    }
   }, [actorName]);
 
   return [actors, loading] as const;
@@ -55,6 +65,7 @@ function useActors(actorName: string) {
 
 type ActorsProps = {
   actorsList?: Actor[];
+  isLoading: boolean;
   searchedActorName: string;
   selectedActor: Actor | null;
   onClick: (actor: Actor) => void;
@@ -62,6 +73,7 @@ type ActorsProps = {
 
 const Actors = ({
   actorsList,
+  isLoading,
   searchedActorName = "",
   selectedActor,
   onClick
@@ -77,9 +89,13 @@ const Actors = ({
   const totalPages = Math.ceil(actors.length / ITEMS_PER_PAGE);
   const showPagination = actors.length > ITEMS_PER_PAGE;
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [loading, isLoading]);
+
   const onPageChange = (page: number) => setCurrentPage(page);
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div>
         Chargement...
