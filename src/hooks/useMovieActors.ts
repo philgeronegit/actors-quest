@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { MOVIE_ACCESS_TOKEN, MOVIE_URL } from "../lib/constants";
-import { MovieActor } from "../types/Actor";
+import { Actor } from "../types/Actor";
 
-const fetchActors = async (movieId: number | null): Promise<MovieActor[]> => {
+const fetchActors = async (movieId: number | null): Promise<Actor[]> => {
   const url = `${MOVIE_URL}/movie/${movieId}/credits`;
   const options = {
     method: "GET",
@@ -13,8 +13,8 @@ const fetchActors = async (movieId: number | null): Promise<MovieActor[]> => {
   };
   const response = await fetch(url, options);
   const data = await response.json();
-  console.log("FETCH Actors:", data);
-  return movieId ? data.cast : Promise.resolve([]);
+  const actors = data.cast;
+  return movieId ? actors : Promise.resolve([]);
 };
 
 function useMovieActors(movieId: number | null) {
@@ -22,7 +22,7 @@ function useMovieActors(movieId: number | null) {
     isLoading,
     error,
     data: actors
-  } = useQuery<MovieActor[], Error>({
+  } = useQuery<Actor[], Error>({
     queryKey: ["actors", movieId],
     queryFn: () => fetchActors(movieId),
     enabled: !!movieId // Only fetch when movieId is truthy

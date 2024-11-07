@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import "./App.css";
 import ActorDetailCard from "./components/ActorDetail";
 import Actors from "./components/Actors";
@@ -26,8 +26,7 @@ function App() {
   const [fetchError, setFetchError] = useState<string | null>(null);
 
   const handleMovieOnClick = (movie: MovieDetail) => {
-    console.log("Movie clicked:", movie);
-    // setMovieId(movie.id);
+    setMovieId(movie.id);
   };
 
   const fetchActorDetail = async (id: number) => {
@@ -56,12 +55,13 @@ function App() {
     }
   };
 
-  const handleNewSearch = (searchTerm: string) => {
+  const handleNewSearch = useCallback((searchTerm: string) => {
     setSearchTerm(searchTerm);
-  };
+    setMovieId(null);
+  }, []);
 
   const handleActorOnClick = (actor: Actor) => {
-    console.log("Actor clicked:", actor);
+    console.log("🚀 ~ handleActorOnClick ~ actor:", actor);
     add(actor);
     setSelectedActor(actor);
     fetchActorDetail(actor.id);
@@ -75,9 +75,11 @@ function App() {
       </div>
       <div className="results">
         <Actors
+          actorsList={actors}
+          isLoading={isLoading}
           searchedActorName={searchTerm}
-          onClick={handleActorOnClick}
           selectedActor={selectedActor}
+          onClick={handleActorOnClick}
         />
       </div>
       <div className="details">
