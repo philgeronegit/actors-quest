@@ -17,7 +17,7 @@ export function cn(...inputs: ClassValue[]): string {
  * @param url the url to fetch data from
  * @returns a promise that resolves to the fetched data
  */
-export async function fetchApi<T>(url: string): Promise<T> {
+export async function fetchApi<T>(url: string, property?: string): Promise<T> {
   const options = {
     method: "GET",
     headers: {
@@ -27,7 +27,7 @@ export async function fetchApi<T>(url: string): Promise<T> {
   };
   const response = await fetch(url, options);
   const data = await response.json();
-  return data;
+  return property ? data[property] : data;
 }
 
 export function getKnownForDepartmentText(
