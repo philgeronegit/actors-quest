@@ -1,24 +1,34 @@
-import { Card } from "flowbite-react";
+import { Card, Spinner } from "flowbite-react";
 import { useState } from "react";
-import { Movie } from "../types/Actor";
+import { MovieDetail } from "../types/Movie";
 import MovieCard from "./MovieCard";
 
 type MoviesProps = {
-  movies?: Movie[];
-  movieOnClick: (movie: Movie) => void;
+  loading: boolean;
+  movies?: MovieDetail[];
+  movieOnClick: (movie: MovieDetail) => void;
 };
-const Movies = ({ movies = [], movieOnClick }: MoviesProps) => {
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+const Movies = ({ loading, movies = [], movieOnClick }: MoviesProps) => {
+  const [selectedMovie, setSelectedMovie] = useState<MovieDetail | null>(null);
 
-  const handleMovieOnClick = (movie: Movie) => {
+  const handleMovieOnClick = (movie: MovieDetail) => {
     setSelectedMovie(movie);
     movieOnClick(movie);
   };
 
+  if (loading) {
+    return (
+      <Card href="#" className="cursor-default min-h-32">
+        Chargement...
+        <Spinner aria-label="Chargement" />
+      </Card>
+    );
+  }
+
   return (
-    <Card href="#" className="cursor-default min-h-32">
+    <Card href="#" className="cursor-default min-h-32 max-h-64 overflow-auto">
       <h3 className="text-lg font-bold">Films</h3>
-      {movies.map((movie: Movie) => (
+      {movies.map((movie: MovieDetail) => (
         <MovieCard
           key={movie.id}
           selectedMovie={selectedMovie}

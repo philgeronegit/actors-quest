@@ -11,19 +11,21 @@ import useHistory from "./hooks/useHistory";
 import useMovieActors from "./hooks/useMovieActors";
 import { MOVIE_URL } from "./lib/constants";
 import { fetchApi } from "./lib/utils";
-import { Actor, ActorDetail, Movie } from "./types/Actor";
+import { Actor, ActorDetail } from "./types/Actor";
+import { MovieDetail } from "./types/Movie";
 
 function App() {
   const [movieId, setMovieId] = useState<number | null>(null);
   const { history, add } = useHistory();
   const [selectedActor, setSelectedActor] = useState<Actor | null>(null);
   const [actorDetail, setActorDetail] = useState<ActorDetail | null>(null);
+  const [actorMovies, setActorMovies] = useState<MovieDetail[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { isLoading, error, actors } = useMovieActors(movieId);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
-  const handleMovieOnClick = (movie: Movie) => {
+  const handleMovieOnClick = (movie: MovieDetail) => {
     console.log("Movie clicked:", movie);
     // setMovieId(movie.id);
   };
@@ -41,6 +43,19 @@ function App() {
     }
   };
 
+  const fetchActorMovies = async (id: number) => {
+    setLoading(true);
+    const url = `${MOVIE_URL}/person/${id}/movie_credits`;
+    try {
+      const response = await fetchApi<MovieDetail[]>(url, "cast");
+      setActorMovies(response);
+    } catch (error: any) {
+      setFetchError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleNewSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
   };
@@ -50,6 +65,7 @@ function App() {
     add(actor);
     setSelectedActor(actor);
     fetchActorDetail(actor.id);
+    fetchActorMovies(actor.id);
   };
 
   return (
@@ -72,21 +88,13 @@ function App() {
       </div>
       <div className="films">
         <Movies
+          loading={loading}
           movieOnClick={handleMovieOnClick}
-          movies={selectedActor?.known_for}
+          movies={actorMovies}
         />
       </div>
       <div className="favorite">
-        <FavoriteActors actors={[]} />
-        {isLoading && <p>Recherche acteurs...</p>}
-        {error && <p>Erreur: {error.message}</p>}
-        {actors && (
-          <ul>
-            {actors.map((actor) => (
-              <li key={actor.id}>{actor.name}</li>
-            ))}
-          </ul>
-        )}
+        <FavoriteActors />
       </div>
       <div className="error">
         {error && <Erreur title="Erreur" text={error.message} />}
