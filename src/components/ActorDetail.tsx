@@ -1,9 +1,11 @@
 import { Card } from "flowbite-react";
+import { useAtom } from "jotai";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { IoMdFemale, IoMdMale } from "react-icons/io";
 import { PiGenderNonbinary } from "react-icons/pi";
 import DefaultImage from "../assets/default_image.png";
 import useFavoriteActor from "../hooks/useFavoriteActors";
+import { loadingActorDetailsAtom } from "../lib/atoms";
 import { getKnownForDepartmentText } from "../lib/utils";
 import { Actor, ActorDetail } from "../types/Actor";
 
@@ -21,11 +23,11 @@ export const getGenderIcon = (gender: number = 0) => {
 };
 
 type ActorDetailProps = {
-  loading: boolean;
   actor: ActorDetail | null;
 };
 
-const ActorDetailCard = ({ actor, loading = false }: ActorDetailProps) => {
+const ActorDetailCard = ({ actor }: ActorDetailProps) => {
+  const [loadingActorDetails] = useAtom(loadingActorDetailsAtom);
   const { favorites, add, remove } = useFavoriteActor();
   const isFavorite = favorites.find((a) => a.id === actor?.id);
 
@@ -46,7 +48,7 @@ const ActorDetailCard = ({ actor, loading = false }: ActorDetailProps) => {
     }
   };
 
-  if (loading) {
+  if (loadingActorDetails) {
     return (
       <Card href="#" className="cursor-default">
         <div role="status" className="max-w-sm p-4 animate-pulse md:p-6">

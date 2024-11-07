@@ -1,14 +1,16 @@
 import { Card, Spinner } from "flowbite-react";
+import { useAtom } from "jotai";
 import { useState } from "react";
+import { loadingActorMoviesAtom } from "../lib/atoms";
 import { MovieDetail } from "../types/Movie";
 import MovieCard from "./MovieCard";
 
 type MoviesProps = {
-  loading: boolean;
   movies?: MovieDetail[];
   movieOnClick: (movie: MovieDetail) => void;
 };
-const Movies = ({ loading, movies = [], movieOnClick }: MoviesProps) => {
+const Movies = ({ movies = [], movieOnClick }: MoviesProps) => {
+  const [loading] = useAtom(loadingActorMoviesAtom);
   const [selectedMovie, setSelectedMovie] = useState<MovieDetail | null>(null);
 
   const handleMovieOnClick = (movie: MovieDetail) => {

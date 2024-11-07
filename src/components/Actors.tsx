@@ -24,14 +24,10 @@ const fetchActors = async (
       actorName
     )}`;
     const data: responseType = await fetchApi(url);
-    console.log("🚀 ~ data:", data);
-
     if (page > data.total_pages) {
       break;
     }
-    console.log(
-      `fetching page ${page} total_pages = ${data.total_pages} : url = ${url}`
-    );
+
     allResults = allResults.concat(
       data.results.filter((actor) => actor.known_for_department === "Acting")
     );
@@ -86,8 +82,8 @@ const Actors = ({
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
-  const totalPages = Math.ceil(actors.length / ITEMS_PER_PAGE);
-  const showPagination = actors.length > ITEMS_PER_PAGE;
+  const totalPages = Math.ceil(actorsToShow.length / ITEMS_PER_PAGE);
+  const showPagination = actorsToShow.length > ITEMS_PER_PAGE;
 
   useEffect(() => {
     setCurrentPage(1);
